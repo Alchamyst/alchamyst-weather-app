@@ -4,6 +4,7 @@ const users = require("./users.json");
 
 import express from "express";
 import geocode from './utils/geocode.js';
+import forecast from "./utils/forecast.js";
 
 if (process.env.NODE_ENV !== 'production') { 
     require('dotenv').config(); 
@@ -25,26 +26,19 @@ app.get('/api/weather', (req, res) => {
         })
     }
 
-    // Lookup address and convert to latitude, longitude.
-    geocode(req.query.address, (error, {latitude, longitude, location}) => {
+    geocode(req.query.address, (error, {longitude, latitude, location}) => {
         if (error) return res.send({ error });
         
-        // these won't be send back usually, and will be used for getting forecast data.
-        res.send(`latitude: ${latitude}, longitude: ${longitude}, location: ${location}`);
+        forecast(longitude, latitude, (error, forecastData) => {
 
-        // get forecast data from external api
+            if (error) return res.send({ error });
 
-        // respond with forecast & location.
-        // res.send({
-        //     forecast: forecastData,
-        //     location,
-        //     address: req.query.address
-        // });
+            res.send({
+                location,
+                forecastData
+            })
+        })
     })
-
-
-    
-    
 });
 
 app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
