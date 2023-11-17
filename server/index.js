@@ -10,7 +10,6 @@ const app = express();
 const PORT = 3001;
 
 app.get("/api/users", (req, res) => {
-    console.log(`user data = ${users}`);
     return res.json(users);
 });
 
