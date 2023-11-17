@@ -1,6 +1,8 @@
-import { createRequire } from "module";
-const require = createRequire(import.meta.url);
-const request = require('postman-request');
+// import { createRequire } from "module";
+// const require = createRequire(import.meta.url);
+// const request = require('postman-request');
+
+import request from "postman-request";
 
 const geocode = (address, callback) => {
 
@@ -21,4 +23,4 @@ const geocode = (address, callback) => {
     });
 }
 
-exports.geocode = geocode;
+export default geocode;
