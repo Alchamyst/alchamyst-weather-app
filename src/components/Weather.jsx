@@ -5,11 +5,6 @@ export default function Project(props) {
     const [currentWeather, setCurrentWeather] = useState({});
     const [errorMessage, setErrorMessage] = useState(undefined);
 
-    const handleOnClick = () => {
-        fetchCurrentWeather("Cheltenham");
-    }
-
-
     const fetchCurrentWeather = (locationQuery) => {
         const searchUrl = `/api/weather?address=${locationQuery}`;
 
@@ -39,7 +34,7 @@ export default function Project(props) {
         <>
             <p>Search below to get the weather in your location.</p>
 
-            <input type='text' name='location' id='location' placeholder='Search Location' value={locationInput} onChange={ (e) => setLocationInput(e.target.value)} />
+            <input type='text' name='location' id='location' placeholder='Search Location' value={locationInput} onChange={ (e) => setLocationInput(e.target.value)} onKeyDown={(event) => {if(event.key === "Enter") fetchCurrentWeather(locationInput)}}/>
             <button onClick={() => fetchCurrentWeather(locationInput)}>Get Current Weather</button>
 
             {errorMessage && <p>{errorMessage}</p>}
