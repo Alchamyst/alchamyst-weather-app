@@ -10,6 +10,8 @@ const geocode = (address, callback) => {
 
     const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(address)}.json?proximity=ip&access_token=${process.env.GEOCODE_API_KEY}`;
 
+    console.log(url);
+
     request({url, json: true}, (error, {body}) => {
         if(error) return callback('Unable to connect to location service!', undefined);
 
