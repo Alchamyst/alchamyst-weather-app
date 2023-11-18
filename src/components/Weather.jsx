@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 export default function Project(props) {
+    const [locationInput, setLocationInput] = useState("");
     const [currentWeather, setCurrentWeather] = useState({});
     const [errorMessage, setErrorMessage] = useState(undefined);
 
@@ -37,19 +38,19 @@ export default function Project(props) {
     return (
         <>
             <p>Search below to get the weather in your location.</p>
-            <form>
-                <input placeholder="location" />
-                <button>Search</button>
-            </form>
 
-            <button onClick={handleOnClick}>Cheltenham Weather</button>
+            <input type='text' name='location' id='location' placeholder='Search Location' value={locationInput} onChange={ (e) => setLocationInput(e.target.value)} />
+            <button onClick={() => fetchCurrentWeather(locationInput)}>Get Current Weather</button>
+
             {errorMessage && <p>{errorMessage}</p>}
             {currentWeather.location && <>
                 <p>{currentWeather.location}</p>
-                <p>Observed at {currentWeather.observationTime}</p>
+                {currentWeather.weatherDescriptions.map((description) => <p key={description}>{description}</p>)}
+                {/* <p>{currentWeather.weatherDescriptions[0]}</p> */}
                 <p>Temperature: {currentWeather.temperature} &#176;C</p>
                 <p>Wind Speed: {currentWeather.windSpeed} kmph</p>
                 <p>Precipitation: {currentWeather.precip} mm</p>
+                <p>Observed at {currentWeather.observationTime}</p>
             </>}
         </>
     )
