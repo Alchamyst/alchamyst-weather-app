@@ -1,14 +1,21 @@
-import alchamystLogo64 from '../../assets/alchamyst_64.png';
-import alchamystLogo128 from '../../assets/alchamyst_128.png';
+import appLogo64 from '../../assets/weather-app_64.png';
 
 import './header.css';
 
 export default function Header () {
     return (
         <>
-            <div className='header bg-primary'>
-                <p className='text-light'>This is my header component.</p>
-            </div>
+            <header className='bg-primary'>
+                <div className='app-logo'>
+                    <a href="/"><img className='app-icon-64' src={appLogo64} alt="weather app icon" /></a>
+                </div>
+                <div className='website-title'>
+                    <h3 className='website-title-text text-light'>Weather Forecast Explorer</h3>
+                </div>
+                <nav>
+                    <p className='text-light'>Navbar Goes Here</p>
+                </nav>
+            </header>
         </>
 
         // <div className='header-bg'>
@@ -18,8 +25,7 @@ export default function Header () {
         //                 <a href='/'>
         //                     <h3>&lt;Alchamyst/&gt;</h3>
         //                     <h4>Ashley Yetman</h4>
-        //                     <img className='alchamyst-logo-64' src={alchamystLogo64} alt="alchamyst logo" />
-        //                     <img className='alchamyst-logo-128' src={alchamystLogo128} alt="alchamyst logo" />
+
         //                 </a> 
         //             </div>    
         //         </div>

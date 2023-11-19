@@ -1,6 +1,28 @@
-.header {
-    display: inline-grid;
+header {
+    display: flex;
+
     margin: 0;
     padding: 1rem;
     width: 100%;
+}
+
+nav {
+    background-color:darkgreen;
+}
+
+.app-icon-64 {
+    /* display: none; */
+    height: 75px;
+    width: 75px;
+}
+
+.website-title {
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+    justify-content: center;
+}
+
+.website-title-text {
+    /* text-align: center; */
 }
