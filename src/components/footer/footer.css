@@ -1,0 +1,6 @@
+.footer {
+    display: inline-grid;
+    margin: 0;
+    padding: 1rem;
+    width: 100%;
+}
