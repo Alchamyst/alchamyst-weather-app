@@ -1,0 +1,15 @@
+version: '1'
+services:
+  frontend:
+    build: ./docker/frontend
+    ports:
+      - "3000:3000"
+  backend:
+    build: ./docker/backend
+    ports:
+      - "3001:3001"
+    # environment:
+    #   - GEOCODE_API_KEY=PUT-API-KEY-HERE
+    #   - WEATHER_API_KEY=PUT-API-KEY-HERE
+    env_file:
+      - .env
