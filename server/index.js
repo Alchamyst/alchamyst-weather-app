@@ -1,6 +1,5 @@
 import { createRequire } from "module";
 const require = createRequire(import.meta.url);
-const users = require("./users.json");
 
 import express from "express";
 import geocode from './utils/geocode.js';
@@ -13,10 +12,6 @@ if (process.env.NODE_ENV !== 'production') {
 const app = express();
 
 const PORT = process.env.PORT || 3001;
-
-app.get('/api/users', (req, res) => {
-    return res.json(users);
-});
 
 app.get('/api/weather', (req, res) => {
     
