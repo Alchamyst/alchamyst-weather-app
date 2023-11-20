@@ -1,15 +1,28 @@
 version: '1'
 services:
+
   # frontend:
-  #   build: ./docker/frontend
+  #   container_name: weather-frontend
+  #   restart: always
+  #   build: 
+  #     context: .
+  #     dockerfile: ./docker/frontend/Dockerfile
   #   ports:
   #     - "3000:3000"
+
   backend:
-    build: ./docker/backend
+    container_name: weather-backend
+    restart: always
+    build: 
+      context: .
+      dockerfile: ./docker/backend/Dockerfile
     ports:
       - "3001:3001"
-    # environment:
+    environment:
+      - NODE_ENV=production
     #   - GEOCODE_API_KEY=PUT-API-KEY-HERE
     #   - WEATHER_API_KEY=PUT-API-KEY-HERE
+
+    # env_file for API keys
     env_file:
       - .env
