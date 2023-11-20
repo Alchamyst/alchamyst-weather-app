@@ -36,4 +36,10 @@ app.get('/api/weather', (req, res) => {
     })
 });
 
+app.get('*', (req, res) => {
+    res.status(404).send({
+        error: 'Bad URI.'
+    })
+});
+
 app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
