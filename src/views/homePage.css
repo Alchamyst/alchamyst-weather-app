@@ -1,5 +1,5 @@
 .homepage {
-    width: clamp(1000px, 90% , 100vw);
+    width: clamp(250px, 95% , 100vw);
     box-sizing: border-box;
     margin: 1rem;
     padding: 1rem;

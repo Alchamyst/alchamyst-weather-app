@@ -1,0 +1,36 @@
+nav {
+    /* background-color:darkgreen; */
+}
+
+nav > ul {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    margin: 0;
+    padding: 0;
+    gap: 0.1rem;
+    justify-content: flex-end;
+    list-style: none;
+}
+
+nav li {
+    padding: 0.1rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
+
+.current-page {
+    filter: brightness(70%);
+    text-decoration: none;
+}
+
+.nav-link {
+    filter: brightness(120%);
+    text-decoration: none;
+}
+
+@media screen and (max-width: 500px){
+    nav > ul { 
+        flex-direction: column;
+    }
+}
