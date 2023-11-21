@@ -1,0 +1,27 @@
+.btn-search {
+    box-sizing: border-box;
+    /* border: 1px solid #bdbdbd; */
+    border-radius: 5px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    cursor: pointer;
+    /* display: block; */
+    font-size: 1rem;
+    height: 2rem;
+    /* margin: 1em auto; */
+    /* max-width: 10em; */
+    padding: 0.25em;
+    /* width: 100%; */
+}
+
+.input-location {
+    box-sizing: border-box;
+    height: 2rem;
+    padding: 0.25em;
+}
+
+.weather-forecast {
+    border-radius: 1em;
+    margin: 1rem;
+    padding: 1rem;
+    max-width: fit-content;
+}

@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import './weather.css';
+
 
 export default function Project(props) {
     const [locationInput, setLocationInput] = useState("");
@@ -16,7 +18,10 @@ export default function Project(props) {
     const parseWeather = (weatherData) => {
         console.log(weatherData);
 
-        if (weatherData.error) return setErrorMessage (weatherData.error);
+        if (weatherData.error) {
+            setCurrentWeather({});
+            return setErrorMessage (weatherData.error);
+        }
 
         setErrorMessage (undefined);
         setCurrentWeather({
@@ -32,13 +37,13 @@ export default function Project(props) {
 
     return (
         <>
-            <p>Search below to get the weather in your location.</p>
+            <p>Enter a location name or postcode below to get the weather.</p>
 
-            <input type='text' name='location' id='location' placeholder='Search Location' value={locationInput} onChange={ (e) => setLocationInput(e.target.value)} onKeyDown={(event) => {if(event.key === "Enter") fetchCurrentWeather(locationInput)}}/>
-            <button onClick={() => fetchCurrentWeather(locationInput)}>Get Current Weather</button>
+            <input className='input-location'  type='text' name='location' id='location' placeholder='Enter Search Location' value={locationInput} onChange={ (e) => setLocationInput(e.target.value)} onKeyDown={(event) => {if(event.key === "Enter") fetchCurrentWeather(locationInput)}}/>
+            <button className='btn-search bg-secondary text-light' onClick={() => fetchCurrentWeather(locationInput)}>Get Current Weather</button>
 
             {errorMessage && <p>{errorMessage}</p>}
-            {currentWeather.location && <>
+            {currentWeather.location && <div className='weather-forecast bg-secondary text-light'>
                 <p>{currentWeather.location}</p>
                 {currentWeather.weatherDescriptions.map((description) => <p key={description}>{description}</p>)}
                 {/* <p>{currentWeather.weatherDescriptions[0]}</p> */}
@@ -46,7 +51,7 @@ export default function Project(props) {
                 <p>Wind Speed: {currentWeather.windSpeed} kmph</p>
                 <p>Precipitation: {currentWeather.precip} mm</p>
                 <p>Observed at {currentWeather.observationTime}</p>
-            </>}
+            </div>}
         </>
     )
 }
