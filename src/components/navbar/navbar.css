@@ -34,8 +34,7 @@ nav li {
     text-decoration: none;
 }
 
-@media screen and (max-width: 500px){
-    nav > ul { 
-        flex-direction: column;
-    }
+@media screen and (max-width: 575px){
+    nav > ul { flex-direction: column; }
+
 }

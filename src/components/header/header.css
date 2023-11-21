@@ -28,6 +28,7 @@ header {
 .website-title {
     display: flex;
     flex-grow: 1;
+    align-items: center;
     justify-content: left;
 }
 
@@ -39,7 +40,7 @@ header {
     .header-content { width: clamp(250px, 95% , 800px ); }
 }
   
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 424px) {
     .app-icon-64 { display: block;}
     .website-title > h3 { display: none; }
     .header-content { width: clamp(250px, 95% , 500px ); }

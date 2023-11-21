@@ -18,10 +18,7 @@ export default function Project(props) {
     const parseWeather = (weatherData) => {
         console.log(weatherData);
 
-        if (weatherData.error) {
-            setCurrentWeather({});
-            return setErrorMessage (weatherData.error);
-        }
+        if (weatherData.error) { return handleError(weatherData.error) }
 
         setErrorMessage (undefined);
         setCurrentWeather({
@@ -35,16 +32,22 @@ export default function Project(props) {
         })
     }
 
+    const handleError = (error) => {
+        setCurrentWeather({});
+        return setErrorMessage (error);
+    }
+
     return (
         <>
-            <p>Enter a location name or postcode below to get the weather.</p>
+            <p>Enter a city name, address or post/zip code below to get the weather.</p>
+            <div className='weather-search'>
+                <input className='input-location'  type='text' name='location' id='location' placeholder='Enter Search Location' value={locationInput} onChange={ (e) => setLocationInput(e.target.value)} onKeyDown={(event) => {if(event.key === "Enter") fetchCurrentWeather(locationInput)}}/>
+                <button className='btn-search bg-secondary text-light' onClick={() => fetchCurrentWeather(locationInput)}>Get Weather</button>
+            </div>
 
-            <input className='input-location'  type='text' name='location' id='location' placeholder='Enter Search Location' value={locationInput} onChange={ (e) => setLocationInput(e.target.value)} onKeyDown={(event) => {if(event.key === "Enter") fetchCurrentWeather(locationInput)}}/>
-            <button className='btn-search bg-secondary text-light' onClick={() => fetchCurrentWeather(locationInput)}>Get Current Weather</button>
-
-            {errorMessage && <p>{errorMessage}</p>}
+            {errorMessage && <p className='error-msg'>{errorMessage}</p>}
             {currentWeather.location && <div className='weather-forecast bg-secondary text-light'>
-                <p>{currentWeather.location}</p>
+                <p>Current Weather in {currentWeather.location}</p>
                 {currentWeather.weatherDescriptions.map((description) => <p key={description}>{description}</p>)}
                 {/* <p>{currentWeather.weatherDescriptions[0]}</p> */}
                 <p>Temperature: {currentWeather.temperature} &#176;C</p>

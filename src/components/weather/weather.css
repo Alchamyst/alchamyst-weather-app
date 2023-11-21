@@ -13,6 +13,11 @@
     /* width: 100%; */
 }
 
+.error-msg {
+    color: darkred;
+    text-align: center;
+}
+
 .input-location {
     box-sizing: border-box;
     height: 2rem;
@@ -22,7 +27,28 @@
 .weather-forecast {
     border-radius: 0.25em;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    margin: 1rem;
+    margin: 0.5rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
     padding: 1rem;
     max-width: fit-content;
 }
+
+.weather-search {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    /* justify-content: center; */
+    gap: 0.5rem;
+}
+
+.weather-search > input {
+    width: 100%;
+    max-width: 15rem;
+}
+
+@media screen and (max-width: 500px) {
+    .weather-search { justify-content: center; }
+    .weather-search > input  { max-width: unset; }
+  }
