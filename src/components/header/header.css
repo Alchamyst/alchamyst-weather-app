@@ -26,3 +26,8 @@ nav {
 .website-title-text {
     /* text-align: center; */
 }
+
+@media screen and (max-width: 600px) {
+    .website-title { display: none; }
+    nav { flex-grow:  1;}
+}
