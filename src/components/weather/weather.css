@@ -15,7 +15,6 @@
 
 .error-msg {
     color: darkred;
-    text-align: center;
 }
 
 .input-location {
@@ -51,4 +50,5 @@
 @media screen and (max-width: 500px) {
     .weather-search { justify-content: center; }
     .weather-search > input  { max-width: unset; }
+    .error-msg { text-align: center; } 
   }
