@@ -11,7 +11,7 @@ export default function Header () {
                 <div className='header-content'>
                     <header>
                         <div className='app-logo'>
-                            <a href="/"><img className='app-icon-64' src={appLogo64} alt="weather app icon" /></a>
+                            <a href="/"><img className='app-icon-64' src={appLogo64} alt="Weather Wingman Icon" /></a>
                         </div>
                         <div className='website-title'>
                             <h3 className='website-title-text text-light'>Weather Wingman</h3>

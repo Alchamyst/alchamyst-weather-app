@@ -3,6 +3,10 @@ nav {
     align-items: center;
 }
 
+nav a {
+    font-size: 1.25rem;
+}
+
 nav > ul {
     display: flex;
     flex-wrap: wrap;
