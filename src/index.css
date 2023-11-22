@@ -12,15 +12,16 @@
   margin-top: 1rem;
   margin-bottom: 1rem;
 
-  width: clamp(800px, 80% , 80%);
+  /* width: clamp(800px, 80% , 80%); */
+  width: clamp(800px, fit-content , 80%);
 }
 
 @media screen and (max-width: 800px) {
-  .page { width: clamp(250px, 95% , 800px); }
+  .page { width: clamp(250px, fit-content , 800px); }
 }
 
 @media screen and (max-width: 500px) {
-  .page { width: clamp(250px, 95% , 500px); }
+  .page { width: clamp(250px, fit-content , 500px); }
 }
 
 
