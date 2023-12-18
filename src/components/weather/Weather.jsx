@@ -25,10 +25,11 @@ export default function Project(props) {
             location: weatherData.location,
             observationTime: weatherData.forecastData.observation_time,
             feelsLike: weatherData.forecastData.feelslike, 
-            precip: weatherData.forecastData.precip,
+            // precip: weatherData.forecastData.precip,
             temperature: weatherData.forecastData.temperature,
-            windSpeed: weatherData.forecastData.wind_speed,
-            weatherDescriptions: weatherData.forecastData.weather_descriptions,
+            // windSpeed: weatherData.forecastData.wind_speed,
+            // weatherDescriptions: weatherData.forecastData.weather_descriptions,
+            description: weatherData.forecastData.weather_description,
         })
     }
 
@@ -48,11 +49,13 @@ export default function Project(props) {
             {errorMessage && <p className='error-msg'>{errorMessage}</p>}
             {currentWeather.location && <div className='weather-forecast bg-secondary text-light'>
                 <p>Current Weather in {currentWeather.location}</p>
-                {currentWeather.weatherDescriptions.map((description) => <p key={description}>{description}</p>)}
+                <p>{currentWeather.description}</p>
+                {/* {currentWeather.weatherDescriptions.map((description) => <p key={description}>{description}</p>)} */}
                 {/* <p>{currentWeather.weatherDescriptions[0]}</p> */}
                 <p>Temperature: {currentWeather.temperature} &#176;C</p>
-                <p>Wind Speed: {currentWeather.windSpeed} kmph</p>
-                <p>Precipitation: {currentWeather.precip} mm</p>
+                <p>Feels Like: {currentWeather.feelsLike} &#176;C</p>
+                {/* <p>Wind Speed: {currentWeather.windSpeed} kmph</p>
+                <p>Precipitation: {currentWeather.precip} mm</p> */}
                 <p>Observed at {currentWeather.observationTime}</p>
             </div>}
         </>
