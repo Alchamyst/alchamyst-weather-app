@@ -32,7 +32,7 @@ const forecast = (longitude, latitude, callback)  => {
     const baseUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}`;
     const currentUrlQuery = `&current=temperature_2m,apparent_temperature,precipitation,weather_code,wind_speed_10m`;
     const hourlyUrlQuery = `&hourly=temperature_2m,precipitation_probability,weather_code&wind_speed_unit=mph`;
-    const miscURLQuery = `&timezone=auto`;
+    const miscURLQuery = `&timezone=auto&forecast_days=1`;
 
     const url = baseUrl + currentUrlQuery + hourlyUrlQuery + miscURLQuery;
     console.log(`url = ${url}`);
@@ -59,5 +59,14 @@ const forecast = (longitude, latitude, callback)  => {
         })
     });
 }
+
+// Work out which data needs remoing
+// splice the array
+
+const trimHourlyData = (hourlyData, trimAmount) => {
+    const trimmedData = hourlyData.filter((item, index) => index >= trimAmount);
+    return trimmedData;
+}
+
 
 export default forecast;

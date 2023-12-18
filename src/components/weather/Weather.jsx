@@ -7,6 +7,7 @@ import weatherCodes from './weather-codes.json';
 export default function Project(props) {
     const [locationInput, setLocationInput] = useState("");
     const [currentWeather, setCurrentWeather] = useState({});
+    const [hourlyWeather, setHourlyWeather] = useState({});
     const [errorMessage, setErrorMessage] = useState(undefined);
 
     const fetchCurrentWeather = (locationQuery) => {
@@ -25,12 +26,18 @@ export default function Project(props) {
         setErrorMessage (undefined);
         setCurrentWeather({
             location: weatherData.location,
-            observationTime: weatherData.forecastData.observation_time,
+            observationTime: moment(weatherData.forecastData.observation_time).format('h:mm a'),
             feelsLike: weatherData.forecastData.feelslike, 
             precip: weatherData.forecastData.precip,
             temperature: weatherData.forecastData.temperature,
             windSpeed: weatherData.forecastData.wind_speed,
             description: readWeatherCode(weatherData.forecastData.weather_code), //this description will be used as the alt text for icon.
+        });
+        setHourlyWeather({
+           times: weatherData.forecastData.hourly_times.map((time) => moment(time).format('h:mm a')),
+           temps: weatherData.forecastData.hourly_temps,
+           precipProbability: weatherData.forecastData.hourly_precip_probability,
+           wCode : weatherData.forecastData.hourly_weather_code 
         })
     }
 
@@ -60,8 +67,22 @@ export default function Project(props) {
                 <p>Feels Like: {currentWeather.feelsLike} &#176;C</p>
                 <p>Wind Speed: {currentWeather.windSpeed} mph</p>
                 <p>Precipitation: {currentWeather.precip} mm</p>
-                <p>Observed at {moment(currentWeather.observationTime).format('h:mm a')}</p>
-            </div>}
+                <p>Observed at {currentWeather.observationTime}</p>
+                <br />
+                <div class="hourly-weather">
+                    <div class="grid-item">
+                        <p>Hourly Times:</p><div class="grid-container">{hourlyWeather.times.map((time) => <div class="grid-item">{time}</div>)}</div>
+                    </div>
+                    <div class="grid-item">
+                        <p>Hourly Temps:</p><div class="grid-container">{hourlyWeather.temps.map((temp) => <div class="grid-item">{temp} &#176;C</div>)}</div>
+                    </div>
+                    <div class="grid-item">
+                        <p>Hourly Pricip. Chance:</p><div class="grid-container">{hourlyWeather.precipProbability.map((precip) => <div class="grid-item">{precip}%</div>)}</div>
+                    </div>
+                </div>
+                
+            </div>
+            }
         </>
     )
 }
