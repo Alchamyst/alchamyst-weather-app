@@ -1,5 +1,7 @@
 import { useState } from 'react';
+import moment from 'moment';
 import './weather.css';
+import weatherCodes from './weather-codes.json';
 
 
 export default function Project(props) {
@@ -25,12 +27,16 @@ export default function Project(props) {
             location: weatherData.location,
             observationTime: weatherData.forecastData.observation_time,
             feelsLike: weatherData.forecastData.feelslike, 
-            // precip: weatherData.forecastData.precip,
+            precip: weatherData.forecastData.precip,
             temperature: weatherData.forecastData.temperature,
-            // windSpeed: weatherData.forecastData.wind_speed,
-            // weatherDescriptions: weatherData.forecastData.weather_descriptions,
-            description: weatherData.forecastData.weather_description,
+            windSpeed: weatherData.forecastData.wind_speed,
+            description: readWeatherCode(weatherData.forecastData.weather_code), //this description will be used as the alt text for icon.
         })
+    }
+
+    const readWeatherCode = (weather_code) => {
+        const description = weatherCodes[weather_code];
+        return description;
     }
 
     const handleError = (error) => {
@@ -50,13 +56,11 @@ export default function Project(props) {
             {currentWeather.location && <div className='weather-forecast bg-secondary text-light'>
                 <p>Current Weather in {currentWeather.location}</p>
                 <p>{currentWeather.description}</p>
-                {/* {currentWeather.weatherDescriptions.map((description) => <p key={description}>{description}</p>)} */}
-                {/* <p>{currentWeather.weatherDescriptions[0]}</p> */}
                 <p>Temperature: {currentWeather.temperature} &#176;C</p>
                 <p>Feels Like: {currentWeather.feelsLike} &#176;C</p>
-                {/* <p>Wind Speed: {currentWeather.windSpeed} kmph</p>
-                <p>Precipitation: {currentWeather.precip} mm</p> */}
-                <p>Observed at {currentWeather.observationTime}</p>
+                <p>Wind Speed: {currentWeather.windSpeed} mph</p>
+                <p>Precipitation: {currentWeather.precip} mm</p>
+                <p>Observed at {moment(currentWeather.observationTime).format('h:mm a')}</p>
             </div>}
         </>
     )
