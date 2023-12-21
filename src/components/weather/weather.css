@@ -52,3 +52,10 @@
     .weather-search > input  { max-width: unset; }
     .error-msg { text-align: center; } 
   }
+
+
+.hourly-weather {
+    display: grid;
+    gap: 5px;
+    grid-template-columns: 33% 33% 33%;
+}
