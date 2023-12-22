@@ -18,7 +18,7 @@ export default function Weather (props) {
         return fetch(searchUrl)
             .then((response) => response.json())
             .then((weatherData) => parseWeather(weatherData))
-            .catch(setErrorMessage('An error occured fetching weather data.'));
+            .catch(error => setErrorMessage('An error occured fetching weather data.'));
             // .catch(error => console.log(error));
     }
 
