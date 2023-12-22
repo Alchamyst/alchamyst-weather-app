@@ -1,0 +1,35 @@
+.weather-summary {
+    border-radius: 0.25em;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    margin: 0.5rem;
+    /* padding-top: 0.5rem;
+    padding-bottom: 0.5rem; */
+    padding: 1rem;
+    max-width: fit-content;
+}
+
+.current-location {
+    font-weight: 400;
+    font-size: 1rem;
+}
+
+.current-time {
+    font-size: 1.25rem;
+    font-weight: 500;
+}
+
+.current-temp {
+    font-size: 1.25rem;
+}
+
+.current-feelslike {
+    font-size: 0.85rem;
+}
+
+.current-humidity {
+    font-size: 0.85rem;
+}
+
+.current-precip {
+    font-size: 1rem;
+}

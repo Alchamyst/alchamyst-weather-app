@@ -28,17 +28,16 @@ export default function Weather (props) {
         setErrorMessage (undefined);
         setCurrentWeather({
             location: weatherData.location,
-            observationTime: moment(weatherData.forecastData.observation_time).format('h:mm a'),
             feelsLike: weatherData.forecastData.feelslike, 
-            precip: weatherData.forecastData.precip,
             temperature: weatherData.forecastData.temperature,
             description: getWeatherDescription(weatherData.forecastData.weather_code), //this description will be used as the alt text for icon.
         });
         setHourlyWeather({
-           times: weatherData.forecastData.hourly_times.map((time) => moment(time).format('h:mm a')),
-           temps: weatherData.forecastData.hourly_temps,
-           precipProbability: weatherData.forecastData.hourly_precip_probability,
-           wCode : weatherData.forecastData.hourly_weather_code 
+            location: weatherData.location,
+            times: weatherData.forecastData.hourly_times.map((time) => moment(time).format('h:mm a')),
+            temps: weatherData.forecastData.hourly_temps,
+            precipProbability: weatherData.forecastData.hourly_precip_probability,
+            wCode : weatherData.forecastData.hourly_weather_code 
         })
     }
 
@@ -47,17 +46,45 @@ export default function Weather (props) {
         return setErrorMessage (error);
     }
 
+    // This function is just to simply testing without hammering the API and should not be in use for production.
+    const mockWeather = () => {
+        setErrorMessage (undefined);
+
+        const location = '221B Baker Street, London, England United Kingdom.';
+
+        const times = ["2023-12-22T00:00", "2023-12-22T01:00", "2023-12-22T02:00", "2023-12-22T03:00", "2023-12-22T04:00", "2023-12-22T05:00", "2023-12-22T06:00", "2023-12-22T07:00", "2023-12-22T08:00", "2023-12-22T09:00", "2023-12-22T10:00", "2023-12-22T11:00"];
+        const momentTimes = times.map((time) => moment(time).format('h:mm a'));
+        const temps = [8.8, 9.1, 9.3, 9.7, 10, 10.4, 10.5, 10.5, 10.4, 10.2, 10.3, 10.3];
+        const precipProbability = [0, 32, 65, 97, 97, 97, 97, 79, 60, 42, 32, 23];
+        const wCode = [3, 3, 3, 61, 61, 61, 61, 61, 61, 3, 61, 61];
+
+        setCurrentWeather({
+            location,
+            description: getWeatherDescription('2'), //this description will be used as the alt text for icon.
+            temperature: '10',
+            feelsLike: '8', 
+        });
+        setHourlyWeather({
+            location,
+            times: momentTimes,
+            temps,
+            precipProbability,
+            wCode 
+        })
+    }
+
     return (
         <>
             <p>Enter a city name, address or post/zip code below to get the weather.</p>
             <div className='weather-search'>
                 <input className='input-location'  type='text' name='location' id='location' placeholder='Enter Search Location' value={locationInput} onChange={ (e) => setLocationInput(e.target.value)} onKeyDown={(event) => {if(event.key === "Enter") fetchCurrentWeather(locationInput)}}/>
                 <button className='btn-search bg-secondary text-light' onClick={() => fetchCurrentWeather(locationInput)}>Get Weather</button>
+                {!import.meta.env.PROD && <button className='dev-temp' onClick={() => mockWeather()}>Mock Fetch</button>}
             </div>
-
+            
             {errorMessage && <p className='error-msg'>{errorMessage}</p>}
             {currentWeather.location && <WeatherSummary currentWeather={currentWeather} />}
-            {currentWeather.location && <WeatherForecast hourlyWeather={hourlyWeather} />}
+            {hourlyWeather.location && <WeatherForecast hourlyWeather={hourlyWeather} />}
         </>
     )
 }

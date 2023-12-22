@@ -2,6 +2,8 @@
 .bg-secondary { background-color: #373c60; }
 .bg-light { background-color: #8da6b6; }
 
+.dev-temp { background-color: orange;  color: #171c30; font-size: 1rem;}
+
 .text-light { color: #bdbdbd; }
 .text-dark { color: #171c30; }
 
