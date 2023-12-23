@@ -8,17 +8,32 @@ import './weather.css';
 
 export default function Weather (props) {
     const [locationInput, setLocationInput] = useState("");
-    const [searchLocation, setsearchLocation] = useState("");
+    const [errorMessage, setErrorMessage] = useState(undefined);
+
+    const [searchLocation, setSearchLocation] = useState(undefined);
+    const [weatherData, setWeatherData] = useState(undefined);
+
+
+
     const [currentWeather, setCurrentWeather] = useState({});
     const [hourlyWeather, setHourlyWeather] = useState({});
-    const [errorMessage, setErrorMessage] = useState(undefined);
+    
 
     const handleGetWeather = () => {
         getLocation(locationInput)
-            .then(location => {
-                const parsedLocationData = parseLocation(location);
-                console.log(parsedLocationData);
-                setsearchLocation(parsedLocationData);
+            .then(async (location) => {
+                const fetchedWeather = await getWeather(location.longitude, location.latitude)
+                const locationData = {
+                    longitude: location.longitude,
+                    latitude: location.latitude,
+                    location: location.location
+                };
+                console.log(locationData);
+                console.log(fetchedWeather);
+
+
+                setSearchLocation(locationData);  
+                setWeatherData(fetchedWeather);
             })
             .catch(error => console.log(error));
     }
@@ -37,29 +52,24 @@ export default function Weather (props) {
             });
     }
 
-    const parseLocation = (locationData) => {
-        return {
-            longitude: locationData.longitude,
-            latitude: locationData.latitude
-        };
-    }
+    const getWeather = async (longitude, latitude) => {
+        const weatherUrl = `/api/weather?longitude=${longitude}&latitude=${latitude}`;
 
-    const getCurrentWeather = () => {
-        const searchUrl = `/api/weather?address=${locationQuery}`;
+            return fetch(weatherUrl)
+                .then((response) => {
+                    if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+                    return response.json();
+                })
+                .catch(error => {
+                    setErrorMessage('An error occured fetching weather data.')
+                    console.log(error)
+                });
+    }  
+    
 
-        return fetch(searchUrl)
-        .then((response) => {
-            if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-            return response.json();
-        })
-        .catch(error => {
-            setErrorMessage('An error occured fetching location data.')
-            console.log(error)
-        })   
-    }
 
     const fetchCurrentWeather = (locationQuery) => {
-        const searchUrl = `/api/weather?address=${locationQuery}`;
+        const searchUrl = `/api/weather-old?address=${locationQuery}`;
 
         fetch(searchUrl)
             .then((response) => response.json())
@@ -125,7 +135,7 @@ export default function Weather (props) {
             <div className='weather-search'>
                 <input className='input-location'  type='text' name='location' id='location' placeholder='Enter Search Location' value={locationInput} onChange={ (e) => setLocationInput(e.target.value)} onKeyDown={(event) => {if(event.key === "Enter") fetchCurrentWeather(locationInput)}}/>
                 <button className='btn-search bg-secondary text-light' onClick={() => fetchCurrentWeather()}>Get Weather</button>
-                {!import.meta.env.PROD && <button className='dev-temp' onClick={() => handleGetWeather()}>Get Location</button>}
+                {!import.meta.env.PROD && <button className='dev-temp' onClick={() => handleGetWeather()}>NEW Get Weather</button>}
                 {!import.meta.env.PROD && <button className='dev-temp' onClick={() => mockWeather()}>Mock Fetch</button>}
             </div>
             

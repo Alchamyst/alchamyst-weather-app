@@ -13,7 +13,7 @@ const app = express();
 
 const PORT = process.env.PORT || 3001;
 
-app.get('/api/weather', (req, res) => {
+app.get('/api/weather-old', (req, res) => {
     
     if(!req.query.address){
         return res.send({
@@ -36,6 +36,24 @@ app.get('/api/weather', (req, res) => {
     })
 });
 
+app.get('/api/weather', (req, res) => {
+    
+    if(!req.query.longitude || !req.query.latitude){
+        return res.send({
+            error: 'You must provide longitude and latitude.'
+        });
+    }
+
+    forecast(req.query.longitude, req.query.latitude, (error, forecastData) => {
+
+        if (error) return res.send({ error });
+
+        res.send({
+            forecastData
+        });
+    });
+});
+
 app.get('/api/location', (req, res) => {
     
     if(!req.query.address){
@@ -49,15 +67,16 @@ app.get('/api/location', (req, res) => {
 
         res.send({
             longitude: locationData.longitude,
-            latitude: locationData.latitude
-        })
+            latitude: locationData.latitude,
+            location: locationData.location
+        });
     })
 });
 
 app.get('*', (req, res) => {
     res.status(404).send({
         error: 'Bad URI.'
-    })
+    });
 });
 
 app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
