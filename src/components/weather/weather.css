@@ -23,15 +23,6 @@
     padding: 0.25em;
 }
 
-.weather-forecast {
-    border-radius: 0.25em;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    margin: 0.5rem;
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
-    padding: 1rem;
-    max-width: fit-content;
-}
 
 .weather-search {
     padding-top: 0.5rem;
@@ -52,10 +43,3 @@
     .weather-search > input  { max-width: unset; }
     .error-msg { text-align: center; } 
   }
-
-
-.hourly-weather {
-    display: grid;
-    gap: 5px;
-    grid-template-columns: 33% 33% 33%;
-}
