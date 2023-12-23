@@ -36,6 +36,24 @@ app.get('/api/weather', (req, res) => {
     })
 });
 
+app.get('/api/location', (req, res) => {
+    
+    if(!req.query.address){
+        return res.send({
+            error: 'You must provide an address.'
+        })
+    }
+
+    geocode(req.query.address, (error, locationData) => {
+        if (error) return res.send({ error });
+
+        res.send({
+            longitude: locationData.longitude,
+            latitude: locationData.latitude
+        })
+    })
+});
+
 app.get('*', (req, res) => {
     res.status(404).send({
         error: 'Bad URI.'
