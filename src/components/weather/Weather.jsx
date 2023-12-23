@@ -8,14 +8,60 @@ import './weather.css';
 
 export default function Weather (props) {
     const [locationInput, setLocationInput] = useState("");
+    const [searchLocation, setsearchLocation] = useState("");
     const [currentWeather, setCurrentWeather] = useState({});
     const [hourlyWeather, setHourlyWeather] = useState({});
     const [errorMessage, setErrorMessage] = useState(undefined);
 
-    const fetchCurrentWeather = (locationQuery) => {
+    const handleGetWeather = () => {
+        getLocation(locationInput)
+            .then(location => {
+                const parsedLocationData = parseLocation(location);
+                console.log(parsedLocationData);
+                setsearchLocation(parsedLocationData);
+            })
+            .catch(error => console.log(error));
+    }
+
+    const getLocation = (locationQuery) => {
+        const searchUrl = `/api/location?address=${locationQuery}`;
+
+        return fetch(searchUrl)
+            .then((response) => {
+                if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+                return response.json();
+            })
+            .catch(error => {
+                setErrorMessage('An error occured fetching location data.')
+                console.log(error)
+            });
+    }
+
+    const parseLocation = (locationData) => {
+        return {
+            longitude: locationData.longitude,
+            latitude: locationData.latitude
+        };
+    }
+
+    const getCurrentWeather = () => {
         const searchUrl = `/api/weather?address=${locationQuery}`;
 
         return fetch(searchUrl)
+        .then((response) => {
+            if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+            return response.json();
+        })
+        .catch(error => {
+            setErrorMessage('An error occured fetching location data.')
+            console.log(error)
+        })   
+    }
+
+    const fetchCurrentWeather = (locationQuery) => {
+        const searchUrl = `/api/weather?address=${locationQuery}`;
+
+        fetch(searchUrl)
             .then((response) => response.json())
             .then((weatherData) => parseWeather(weatherData))
             .catch(error => setErrorMessage('An error occured fetching weather data.'));
@@ -78,7 +124,8 @@ export default function Weather (props) {
             <p>Enter a city name, address or post/zip code below to get the weather.</p>
             <div className='weather-search'>
                 <input className='input-location'  type='text' name='location' id='location' placeholder='Enter Search Location' value={locationInput} onChange={ (e) => setLocationInput(e.target.value)} onKeyDown={(event) => {if(event.key === "Enter") fetchCurrentWeather(locationInput)}}/>
-                <button className='btn-search bg-secondary text-light' onClick={() => fetchCurrentWeather(locationInput)}>Get Weather</button>
+                <button className='btn-search bg-secondary text-light' onClick={() => fetchCurrentWeather()}>Get Weather</button>
+                {!import.meta.env.PROD && <button className='dev-temp' onClick={() => handleGetWeather()}>Get Location</button>}
                 {!import.meta.env.PROD && <button className='dev-temp' onClick={() => mockWeather()}>Mock Fetch</button>}
             </div>
             
