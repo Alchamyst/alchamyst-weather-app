@@ -1,9 +1,9 @@
 import moment from 'moment';
 import { useState } from 'react';
-import { getWeatherDescription } from '../../utils/weather-info';
-import WeatherForecast from './WeatherForecast';
 import WeatherSummary from './WeatherSummary';
 import './weather.css';
+
+import mockData from '../../utils/mock-weather.json'; //temporary for quick testing
 
 
 export default function Weather (props) {
@@ -11,13 +11,7 @@ export default function Weather (props) {
     const [errorMessage, setErrorMessage] = useState(undefined);
 
     const [searchLocation, setSearchLocation] = useState(undefined);
-    const [weatherData, setWeatherData] = useState(undefined);
-
-
-
-    const [currentWeather, setCurrentWeather] = useState({});
-    const [hourlyWeather, setHourlyWeather] = useState({});
-    
+    const [weatherData, setWeatherData] = useState(undefined); 
 
     const handleGetWeather = () => {
         getLocation(locationInput)
@@ -26,14 +20,14 @@ export default function Weather (props) {
                 const locationData = {
                     longitude: location.longitude,
                     latitude: location.latitude,
-                    location: location.location
+                    name: location.location
                 };
+
                 console.log(locationData);
                 console.log(fetchedWeather);
 
-
                 setSearchLocation(locationData);  
-                setWeatherData(fetchedWeather);
+                setWeatherData(fetchedWeather.forecastData);
             })
             .catch(error => console.log(error));
     }
@@ -68,33 +62,23 @@ export default function Weather (props) {
     
 
 
-    const fetchCurrentWeather = (locationQuery) => {
-        const searchUrl = `/api/weather-old?address=${locationQuery}`;
+    // const fetchCurrentWeather = (locationQuery) => {
+    //     const searchUrl = `/api/weather-old?address=${locationQuery}`;
 
-        fetch(searchUrl)
-            .then((response) => response.json())
-            .then((weatherData) => parseWeather(weatherData))
-            .catch(error => setErrorMessage('An error occured fetching weather data.'));
-            // .catch(error => console.log(error));
-    }
+    //     fetch(searchUrl)
+    //         .then((response) => response.json())
+    //         .then((weatherData) => parseWeather(weatherData))
+    //         .catch(error => setErrorMessage('An error occured fetching weather data.'));
+    //         // .catch(error => console.log(error));
+    // }
 
     const parseWeather = (weatherData) => {
         if (weatherData.error) { return handleError(weatherData.error) }
 
         setErrorMessage (undefined);
-        setCurrentWeather({
-            location: weatherData.location,
-            feelsLike: weatherData.forecastData.feelslike, 
-            temperature: weatherData.forecastData.temperature,
-            description: getWeatherDescription(weatherData.forecastData.weather_code), //this description will be used as the alt text for icon.
-        });
-        setHourlyWeather({
-            location: weatherData.location,
-            times: weatherData.forecastData.hourly_times.map((time) => moment(time).format('h:mm a')),
-            temps: weatherData.forecastData.hourly_temps,
-            precipProbability: weatherData.forecastData.hourly_precip_probability,
-            wCode : weatherData.forecastData.hourly_weather_code 
-        })
+        setWeatherData(
+            
+        )
     }
 
     const handleError = (error) => {
@@ -105,43 +89,26 @@ export default function Weather (props) {
     // This function is just to simply testing without hammering the API and should not be in use for production.
     const mockWeather = () => {
         setErrorMessage (undefined);
-
-        const location = '221B Baker Street, London, England United Kingdom.';
-
-        const times = ["2023-12-22T00:00", "2023-12-22T01:00", "2023-12-22T02:00", "2023-12-22T03:00", "2023-12-22T04:00", "2023-12-22T05:00", "2023-12-22T06:00", "2023-12-22T07:00", "2023-12-22T08:00", "2023-12-22T09:00", "2023-12-22T10:00", "2023-12-22T11:00"];
-        const momentTimes = times.map((time) => moment(time).format('h:mm a'));
-        const temps = [8.8, 9.1, 9.3, 9.7, 10, 10.4, 10.5, 10.5, 10.4, 10.2, 10.3, 10.3];
-        const precipProbability = [0, 32, 65, 97, 97, 97, 97, 79, 60, 42, 32, 23];
-        const wCode = [3, 3, 3, 61, 61, 61, 61, 61, 61, 3, 61, 61];
-
-        setCurrentWeather({
-            location,
-            description: getWeatherDescription('2'), //this description will be used as the alt text for icon.
-            temperature: '10',
-            feelsLike: '8', 
+        setWeatherData(mockData.forecastData);
+        setSearchLocation({
+            longitude: -2.4457329,
+            latitude: 53.097829,
+            name: "Crewe, Cheshire East, England, United Kingdom"
         });
-        setHourlyWeather({
-            location,
-            times: momentTimes,
-            temps,
-            precipProbability,
-            wCode 
-        })
     }
 
     return (
         <>
             <p>Enter a city name, address or post/zip code below to get the weather.</p>
             <div className='weather-search'>
-                <input className='input-location'  type='text' name='location' id='location' placeholder='Enter Search Location' value={locationInput} onChange={ (e) => setLocationInput(e.target.value)} onKeyDown={(event) => {if(event.key === "Enter") fetchCurrentWeather(locationInput)}}/>
-                <button className='btn-search bg-secondary text-light' onClick={() => fetchCurrentWeather()}>Get Weather</button>
-                {!import.meta.env.PROD && <button className='dev-temp' onClick={() => handleGetWeather()}>NEW Get Weather</button>}
+                <input className='input-location'  type='text' name='location' id='location' placeholder='Enter Search Location' value={locationInput} onChange={ (e) => setLocationInput(e.target.value)} onKeyDown={(event) => {if(event.key === "Enter") handleGetWeather()}}/>
+                <button className='btn-search bg-secondary text-light' onClick={() => handleGetWeather()}>Get Weather</button>
                 {!import.meta.env.PROD && <button className='dev-temp' onClick={() => mockWeather()}>Mock Fetch</button>}
             </div>
             
             {errorMessage && <p className='error-msg'>{errorMessage}</p>}
-            {currentWeather.location && <WeatherSummary currentWeather={currentWeather} />}
-            {hourlyWeather.location && <WeatherForecast hourlyWeather={hourlyWeather} />}
+            {searchLocation && <WeatherSummary location={searchLocation.name} weatherData={weatherData.current} />}
+            {/* {searchLocation && <WeatherForecast hourlyWeather={weatherData.forecast} />} */}
         </>
     )
 }

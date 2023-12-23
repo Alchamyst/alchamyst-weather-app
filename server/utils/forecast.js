@@ -6,6 +6,7 @@ const forecast = (longitude, latitude, callback)  => {
             if(error) {
                 console.error('Error fetching weather data:', error);
                 callback('Error fetching weather data', undefined);  
+                return;
             }
 
             const parsedData = parseWeatherData(weatherData.current, weatherData.hourly);

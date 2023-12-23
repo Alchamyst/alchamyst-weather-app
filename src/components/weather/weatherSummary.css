@@ -18,16 +18,21 @@
     font-weight: 500;
 }
 
+.current-description{
+    font-size: 1.25rem;
+    font-weight: 400;
+}
+
 .current-temp {
     font-size: 1.25rem;
 }
 
 .current-feelslike {
-    font-size: 0.85rem;
+    font-size: 1rem;
 }
 
 .current-humidity {
-    font-size: 0.85rem;
+    font-size: 1rem;
 }
 
 .current-precip {
