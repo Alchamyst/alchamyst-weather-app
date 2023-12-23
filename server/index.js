@@ -13,29 +13,6 @@ const app = express();
 
 const PORT = process.env.PORT || 3001;
 
-app.get('/api/weather-old', (req, res) => {
-    
-    if(!req.query.address){
-        return res.send({
-            error: 'You must provide an address.'
-        })
-    }
-
-    geocode(req.query.address, (error, locationData) => {
-        if (error) return res.send({ error });
-
-        forecast(locationData.longitude, locationData.latitude, (error, forecastData) => {
-
-            if (error) return res.send({ error });
-
-            res.send({
-                location: locationData.location,
-                forecastData
-            })
-        })
-    })
-});
-
 app.get('/api/weather', (req, res) => {
     
     if(!req.query.longitude || !req.query.latitude){
