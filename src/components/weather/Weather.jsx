@@ -1,6 +1,7 @@
 import moment from 'moment';
 import { useState } from 'react';
 import WeatherSummary from './WeatherSummary';
+import WeatherForecast from './WeatherForecast';
 import './weather.css';
 
 import mockData from '../../utils/mock-weather.json'; //temporary for quick testing
@@ -27,7 +28,8 @@ export default function Weather (props) {
                 console.log(fetchedWeather);
 
                 setSearchLocation(locationData);  
-                setWeatherData(fetchedWeather.forecastData);
+                setWeatherData(formatForecastData(fetchedWeather.forecastData));
+                // setWeatherData(fetchedWeather.forecastData);
             })
             .catch(error => console.log(error));
     }
@@ -72,13 +74,15 @@ export default function Weather (props) {
     //         // .catch(error => console.log(error));
     // }
 
-    const parseWeather = (weatherData) => {
-        if (weatherData.error) { return handleError(weatherData.error) }
+    const formatForecastData = (weatherData) => {
+        const formattedForecast = {...weatherData};
 
-        setErrorMessage (undefined);
-        setWeatherData(
-            
-        )
+        if(formattedForecast.forecast && formattedForecast.forecast.hours) {
+            formattedForecast.forecast.hours = formattedForecast.forecast.hours.map((time) => {
+                return moment(time).format('h:mm a');
+            });
+        }
+        return formattedForecast
     }
 
     const handleError = (error) => {
@@ -89,7 +93,8 @@ export default function Weather (props) {
     // This function is just to simply testing without hammering the API and should not be in use for production.
     const mockWeather = () => {
         setErrorMessage (undefined);
-        setWeatherData(mockData.forecastData);
+        setWeatherData(formatForecastData(mockData.forecastData));
+        // setWeatherData(mockData.forecastData);
         setSearchLocation({
             longitude: -2.4457329,
             latitude: 53.097829,
@@ -108,7 +113,7 @@ export default function Weather (props) {
             
             {errorMessage && <p className='error-msg'>{errorMessage}</p>}
             {searchLocation && <WeatherSummary location={searchLocation.name} weatherData={weatherData.current} />}
-            {/* {searchLocation && <WeatherForecast hourlyWeather={weatherData.forecast} />} */}
+            {searchLocation && <WeatherForecast weatherData={weatherData.forecast} />}
         </>
     )
 }
