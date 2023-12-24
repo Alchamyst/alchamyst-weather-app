@@ -29,6 +29,12 @@ export default function WeatherForecast(props) {
                         <p>WeatherCode</p><div className='grid-container'>{props.weatherData.weatherCode.map((weatherCode, index) => <div className='grid-item' key={`hourlyWeatherCode-${index}`}>{weatherCode}</div>)}</div>
                     </div>
                     <div className='grid-item'>
+                        <p>Weather Icon</p><div className='grid-container'>{props.weatherData.icon.map((icon, index) => <div className='grid-item' key={`hourlyIcon-${index}`}>{icon}</div>)}</div>
+                    </div>
+                    <div className='grid-item'>
+                        <p>isDay</p><div className='grid-container'>{props.weatherData.isDay.map((isDay, index) => <div className='grid-item' key={`hourlyisDay-${index}`}>{isDay}</div>)}</div>
+                    </div>
+                    <div className='grid-item'>
                         <p>Description</p><div className='grid-container'>{props.weatherData.description.map((description, index) => <div className='grid-item' key={`hourlyDescription-${index}`}>{description}</div>)}</div>
                     </div>
                 </div>

@@ -2,7 +2,7 @@ import moment from 'moment';
 import { useState } from 'react';
 import WeatherSummary from './WeatherSummary';
 import WeatherForecast from './WeatherForecast';
-import { getWeatherDescription } from '../../utils/weather-info';
+import { getCompassDirection, getWeatherDescription, getWeatherIcon  } from '../../utils/weatherInfo';
 import './weather.css';
 
 export default function Weather (props) {
@@ -40,8 +40,9 @@ export default function Weather (props) {
                 return response.json();
             })
             .catch(error => {
-                setErrorMessage('An error occured fetching location data.')
-                console.log(error)
+                setErrorMessage('An error occured fetching location data.');
+                setWeatherData(undefined);
+                console.log(error);
             });
     }
 
@@ -54,7 +55,8 @@ export default function Weather (props) {
                     return response.json();
                 })
                 .catch(error => {
-                    setErrorMessage('An error occured fetching weather data.')
+                    setErrorMessage('An error occured fetching weather data.');
+                    setWeatherData(undefined);
                     console.log(error)
                 });
     }  
@@ -67,14 +69,18 @@ export default function Weather (props) {
                 return moment(time).format('h:mm a');
             });
         }
-
         if(formattedForecast.current && formattedForecast.current.weatherCode){
             formattedForecast.current.description = getWeatherDescription(formattedForecast.current.weatherCode);
+            formattedForecast.current.icon = getWeatherIcon(formattedForecast.current.weatherCode, formattedForecast.current.isDay);
+            formattedForecast.current.compassWindDirection = getCompassDirection(formattedForecast.current.windDirection);
         }
 
         if(formattedForecast.forecast && formattedForecast.forecast.weatherCode){
             formattedForecast.forecast.description = formattedForecast.forecast.weatherCode.map((weatherCode) => {
                 return getWeatherDescription(weatherCode);
+            });
+            formattedForecast.forecast.icon = formattedForecast.forecast.weatherCode.map((weatherCode, index) => {
+                return getWeatherIcon(weatherCode, formattedForecast.forecast.isDay[index]);
             });
         }
 
@@ -85,10 +91,6 @@ export default function Weather (props) {
         return formattedForecast
     }
 
-    // const handleError = (error) => {
-    //     setCurrentWeather({});
-    //     return setErrorMessage (error);
-    // }
 
     return (
         <>
@@ -100,7 +102,7 @@ export default function Weather (props) {
             
             {errorMessage && <p className='error-msg'>{errorMessage}</p>}
             {searchLocation && <WeatherSummary location={searchLocation.name} weatherData={weatherData.current} />}
-            {searchLocation && <WeatherForecast weatherData={weatherData.forecast} />}
+            {/* {searchLocation && <WeatherForecast weatherData={weatherData.forecast} />} */}
         </>
     )
 }
