@@ -15,16 +15,19 @@ export default function Weather (props) {
     const handleGetWeather = () => {
         getLocation(locationInput)
             .then(async (location) => {
+
+                if(location.error) {
+                    console.log(error);
+                    setErrorMessage('An error occured fetching location data.');
+                    return setWeatherData(undefined);
+                }
+
                 const fetchedWeather = await getWeather(location.longitude, location.latitude)
                 const locationData = {
                     longitude: location.longitude,
                     latitude: location.latitude,
                     name: location.location
                 };
-
-                console.log(locationData);
-                console.log(fetchedWeather);
-
                 setSearchLocation(locationData);  
                 setWeatherData(formatForecastData(fetchedWeather.forecastData));
             })
@@ -40,9 +43,9 @@ export default function Weather (props) {
                 return response.json();
             })
             .catch(error => {
+                console.log(error);
                 setErrorMessage('An error occured fetching location data.');
                 setWeatherData(undefined);
-                console.log(error);
             });
     }
 
@@ -55,9 +58,9 @@ export default function Weather (props) {
                     return response.json();
                 })
                 .catch(error => {
+                    console.log(error);
                     setErrorMessage('An error occured fetching weather data.');
                     setWeatherData(undefined);
-                    console.log(error)
                 });
     }  
 
