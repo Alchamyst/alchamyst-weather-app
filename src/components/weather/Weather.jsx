@@ -64,22 +64,22 @@ export default function Weather (props) {
     const formatForecastData = (weatherData) => {
         const formattedForecast = {...weatherData};
 
-        if(formattedForecast.current && formattedForecast.current.time) {
+        if(formattedForecast.current && formattedForecast.current.time !== undefined) {
             formattedForecast.current.time = moment(formattedForecast.current.time).format('h:mm a');
         }
 
-        if(formattedForecast.forecast && formattedForecast.forecast.hours) {
+        if(formattedForecast.forecast && formattedForecast.forecast.hours !== undefined) {
             formattedForecast.forecast.hours = formattedForecast.forecast.hours.map((time) => {
                 return moment(time).format('h:mm a');
             });
         }
-        if(formattedForecast.current && formattedForecast.current.weatherCode){
+        if(formattedForecast.current && formattedForecast.current.weatherCode !== undefined){
             formattedForecast.current.description = getWeatherDescription(formattedForecast.current.weatherCode);
             formattedForecast.current.icon = getWeatherIcon(formattedForecast.current.weatherCode, formattedForecast.current.isDay);
             formattedForecast.current.compassWindDirection = getCompassDirection(formattedForecast.current.windDirection);
         }
 
-        if(formattedForecast.forecast && formattedForecast.forecast.weatherCode){
+        if(formattedForecast.forecast && formattedForecast.forecast.weatherCode !== undefined){
             formattedForecast.forecast.description = formattedForecast.forecast.weatherCode.map((weatherCode) => {
                 return getWeatherDescription(weatherCode);
             });
@@ -87,11 +87,6 @@ export default function Weather (props) {
                 return getWeatherIcon(weatherCode, formattedForecast.forecast.isDay[index]);
             });
         }
-
-
-        // add lookup of weather code, adding description to the data.
-        // also use weather code to identify the correct icon to be used.
-
         return formattedForecast
     }
 
