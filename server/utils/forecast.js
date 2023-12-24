@@ -45,7 +45,7 @@ const parseWeatherData = (currentWeatherData, forecastWeatherData) => {
             precipitationAmount: currentWeatherData.precipitation,
             humidity: currentWeatherData.relative_humidity_2m,
             windSpeed: currentWeatherData.wind_speed_10m,
-            windDirection: currentWeatherData.wind_speed_10m,
+            windDirection: currentWeatherData.wind_direction_10m,
             time: currentWeatherData.time,
             isDay: currentWeatherData.is_day
         },
@@ -57,7 +57,7 @@ const parseWeatherData = (currentWeatherData, forecastWeatherData) => {
             precipitationChance: forecastWeatherData.precipitation_probability,
             humidity: forecastWeatherData.relative_humidity_2m,
             windSpeed: forecastWeatherData.wind_speed_10m,
-            windDirection: forecastWeatherData.wind_speed_10m,
+            windDirection: forecastWeatherData.wind_direction_10m,
             isDay: forecastWeatherData.is_day
         }
     }
