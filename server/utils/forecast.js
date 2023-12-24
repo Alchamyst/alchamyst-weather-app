@@ -20,8 +20,8 @@ const forecast = (longitude, latitude, callback)  => {
 
 const fetchWeather = (longitude, latitude, callback) => {
     const baseUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}`;
-    const currentUrlQuery = `&current=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,weather_code,wind_speed_10m`;
-    const hourlyUrlQuery = `&hourly=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation_probability,weather_code,wind_speed_10m`;
+    const currentUrlQuery = `&current=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,weather_code,wind_speed_10m,wind_direction_10m`;
+    const hourlyUrlQuery = `&hourly=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation_probability,weather_code,wind_speed_10m,wind_direction_10m`;
     const miscURLQuery = `&wind_speed_unit=mph&timezone=auto&forecast_days=1&forecast_hours=24`;
 
     const url = baseUrl + currentUrlQuery + hourlyUrlQuery + miscURLQuery;
@@ -44,7 +44,9 @@ const parseWeatherData = (currentWeatherData, forecastWeatherData) => {
             weatherCode: currentWeatherData.weather_code,
             precipitationAmount: currentWeatherData.precipitation,
             humidity: currentWeatherData.relative_humidity_2m,
-            windSpeed: currentWeatherData.wind_speed_10m
+            windSpeed: currentWeatherData.wind_speed_10m,
+            windDirection: currentWeatherData.wind_speed_10m,
+            time: currentWeatherData.time
         },
         forecast: {
             hours: forecastWeatherData.time,
@@ -53,7 +55,8 @@ const parseWeatherData = (currentWeatherData, forecastWeatherData) => {
             weatherCode: forecastWeatherData.weather_code,
             precipitationChance: forecastWeatherData.precipitation_probability,
             humidity: forecastWeatherData.relative_humidity_2m,
-            windSpeed: forecastWeatherData.wind_speed_10m
+            windSpeed: forecastWeatherData.wind_speed_10m,
+            windDirection: forecastWeatherData.wind_speed_10m,
         }
     }
 };
