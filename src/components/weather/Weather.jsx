@@ -17,7 +17,7 @@ export default function Weather (props) {
             .then(async (location) => {
 
                 if(location.error) {
-                    console.log(error);
+                    console.log(location.error);
                     setErrorMessage('An error occured fetching location data.');
                     return setWeatherData(undefined);
                 }
