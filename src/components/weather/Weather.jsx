@@ -64,6 +64,10 @@ export default function Weather (props) {
     const formatForecastData = (weatherData) => {
         const formattedForecast = {...weatherData};
 
+        if(formattedForecast.current && formattedForecast.current.time) {
+            formattedForecast.current.time = moment(formattedForecast.current.time).format('h:mm a');
+        }
+
         if(formattedForecast.forecast && formattedForecast.forecast.hours) {
             formattedForecast.forecast.hours = formattedForecast.forecast.hours.map((time) => {
                 return moment(time).format('h:mm a');
@@ -98,11 +102,14 @@ export default function Weather (props) {
             <div className='weather-search'>
                 <input className='input-location'  type='text' name='location' id='location' placeholder='Enter Search Location' value={locationInput} onChange={ (e) => setLocationInput(e.target.value)} onKeyDown={(event) => {if(event.key === "Enter") handleGetWeather()}}/>
                 <button className='btn-search bg-secondary text-light' onClick={() => handleGetWeather()}>Get Weather</button>
+                {errorMessage && <p className='error-msg'>{errorMessage}</p>}
             </div>
-            
-            {errorMessage && <p className='error-msg'>{errorMessage}</p>}
-            {searchLocation && <WeatherSummary location={searchLocation.name} weatherData={weatherData.current} />}
-            {/* {searchLocation && <WeatherForecast weatherData={weatherData.forecast} />} */}
+            <div className='weather-results'>
+                {searchLocation && <WeatherSummary location={searchLocation.name} weatherData={weatherData.current} />}
+                {/* {searchLocation && <WeatherForecast weatherData={weatherData.forecast} />} */}
+            </div>
+
+
         </>
     )
 }

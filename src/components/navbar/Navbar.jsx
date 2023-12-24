@@ -4,7 +4,7 @@ export default function Navbar () {
 
     const pageList = [
         { "path":"/", "label": "Home" },
-        { "path":"/planner", "label": "Planner" },
+        // { "path":"/planner", "label": "Planner" },
         { "path":"/about", "label": "About" }
     ];
 

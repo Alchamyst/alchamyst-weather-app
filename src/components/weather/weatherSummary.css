@@ -73,6 +73,22 @@
     /* reduce sizes of text/icons */
 }
   
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 575px) {
     /* Switch to 1 column grid layout */
+    .weather-summary {
+        grid-template-columns: 100%;
+        grid-template-rows: min-content;
+        row-gap: 0em;
+    }
+    .weather-summary > .current-location, .weather-summary > .weather-icon {
+        grid-column: span 1
+    }
+    .weather-summary > .current-temp, .weather-summary > .weather-icon, .weather-summary > .current-description {
+        align-self: center;
+        justify-self: center;
+    }
+    .weather-summary > .current-location { font-size: 1rem;}
+    .weather-summary > .current-temp { font-size: 2.5rem; }
+    .weather-summary > .weather-icon { height: 7.2rem; width: 9.6rem;}
+
 }
