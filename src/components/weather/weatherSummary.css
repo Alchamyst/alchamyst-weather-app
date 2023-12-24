@@ -1,40 +1,78 @@
 .weather-summary {
     border-radius: 0.25em;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    margin: 0.5rem;
-    /* padding-top: 0.5rem;
-    padding-bottom: 0.5rem; */
+    margin: 0.5rem 0 0.5rem 0;
     padding: 1rem;
     max-width: fit-content;
+
+    display: grid;
+    gap: 1px;
+    grid-template-columns: 15rem 15rem;
+    grid-template-rows: 2.5rem 5rem 5rem 2rem 2rem;
+    /* grid-template-areas:
+        "location location"
+        "temperature weather-icon"
+        "description description"
+        "feelslike humidity"
+        "windspeed windirection"; */
 }
 
-.current-location {
+.weather-summary > .current-location {
     font-weight: 400;
-    font-size: 1rem;
-}
-
-.current-time {
     font-size: 1.25rem;
-    font-weight: 500;
+
+    grid-area:"location";
+    grid-column: span 2;
 }
 
-.current-description{
+.weather-summary > .current-temp {
+    color: #f0f0f0;
+    font-size: 3rem;
+    grid-area:"temperature";
+}
+
+.weather-summary > .weather-icon {
+    margin-top: 0.5rem;
+    height: 9.6rem;
+    width: 12.8rem;
+    grid-area:"weather-icon";
+    grid-row: span 2
+}
+
+
+
+.weather-summary > .current-description {
+    color: #f0f0f0;
     font-size: 1.25rem;
     font-weight: 400;
+    grid-area:"description";
+    /* grid-column: span 2; */
 }
 
-.current-temp {
-    font-size: 1.25rem;
-}
-
-.current-feelslike {
+.weather-summary > .current-feelslike {
     font-size: 1rem;
+    grid-area:"feelslike";
 }
 
-.current-humidity {
+.weather-summary > .current-humidity {
     font-size: 1rem;
+    grid-area:"humidity";
 }
 
-.current-precip {
+.weather-summary > .current-windspeed {
     font-size: 1rem;
+    grid-area:"windspeed";
+}
+
+.weather-summary > .current-winddirection {
+    font-size: 1rem;
+    grid-area:"winddirection";
+}
+
+@media screen and (max-width: 800px) {
+    /* reduce sizes of text/icons */
+}
+  
+@media screen and (max-width: 500px) {
+    /* Switch to 1 column grid layout */
 }
