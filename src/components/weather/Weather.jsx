@@ -18,7 +18,7 @@ export default function Weather (props) {
 
                 if(location.error) {
                     console.log(location.error);
-                    setErrorMessage('An error occured fetching location data.');
+                    setErrorMessage(location.error);
                     return setWeatherData(undefined);
                 }
 
@@ -30,6 +30,7 @@ export default function Weather (props) {
                 };
                 setSearchLocation(locationData);  
                 setWeatherData(formatForecastData(fetchedWeather.forecastData));
+                setErrorMessage(undefined);
             })
             .catch(error => console.log(error));
     }
@@ -103,7 +104,7 @@ export default function Weather (props) {
                 {errorMessage && <p className='error-msg'>{errorMessage}</p>}
             </div>
             <div className='weather-results'>
-                {searchLocation && <WeatherSummary location={searchLocation.name} weatherData={weatherData.current} />}
+                {searchLocation && !errorMessage && <WeatherSummary location={searchLocation.name} weatherData={weatherData.current} />}
                 {/* {searchLocation && <WeatherForecast weatherData={weatherData.forecast} />} */}
             </div>
 
