@@ -2,10 +2,8 @@ import moment from 'moment';
 import { useState } from 'react';
 import WeatherSummary from './WeatherSummary';
 import WeatherForecast from './WeatherForecast';
+import { getCompassDirection, getWeatherDescription, getWeatherIcon  } from '../../utils/weatherInfo';
 import './weather.css';
-
-import mockData from '../../utils/mock-weather.json'; //temporary for quick testing
-
 
 export default function Weather (props) {
     const [locationInput, setLocationInput] = useState("");
@@ -29,7 +27,6 @@ export default function Weather (props) {
 
                 setSearchLocation(locationData);  
                 setWeatherData(formatForecastData(fetchedWeather.forecastData));
-                // setWeatherData(fetchedWeather.forecastData);
             })
             .catch(error => console.log(error));
     }
@@ -43,8 +40,9 @@ export default function Weather (props) {
                 return response.json();
             })
             .catch(error => {
-                setErrorMessage('An error occured fetching location data.')
-                console.log(error)
+                setErrorMessage('An error occured fetching location data.');
+                setWeatherData(undefined);
+                console.log(error);
             });
     }
 
@@ -57,50 +55,46 @@ export default function Weather (props) {
                     return response.json();
                 })
                 .catch(error => {
-                    setErrorMessage('An error occured fetching weather data.')
+                    setErrorMessage('An error occured fetching weather data.');
+                    setWeatherData(undefined);
                     console.log(error)
                 });
     }  
-    
-
-
-    // const fetchCurrentWeather = (locationQuery) => {
-    //     const searchUrl = `/api/weather-old?address=${locationQuery}`;
-
-    //     fetch(searchUrl)
-    //         .then((response) => response.json())
-    //         .then((weatherData) => parseWeather(weatherData))
-    //         .catch(error => setErrorMessage('An error occured fetching weather data.'));
-    //         // .catch(error => console.log(error));
-    // }
 
     const formatForecastData = (weatherData) => {
         const formattedForecast = {...weatherData};
+
+        if(formattedForecast.current && formattedForecast.current.time) {
+            formattedForecast.current.time = moment(formattedForecast.current.time).format('h:mm a');
+        }
 
         if(formattedForecast.forecast && formattedForecast.forecast.hours) {
             formattedForecast.forecast.hours = formattedForecast.forecast.hours.map((time) => {
                 return moment(time).format('h:mm a');
             });
         }
+        if(formattedForecast.current && formattedForecast.current.weatherCode){
+            formattedForecast.current.description = getWeatherDescription(formattedForecast.current.weatherCode);
+            formattedForecast.current.icon = getWeatherIcon(formattedForecast.current.weatherCode, formattedForecast.current.isDay);
+            formattedForecast.current.compassWindDirection = getCompassDirection(formattedForecast.current.windDirection);
+        }
+
+        if(formattedForecast.forecast && formattedForecast.forecast.weatherCode){
+            formattedForecast.forecast.description = formattedForecast.forecast.weatherCode.map((weatherCode) => {
+                return getWeatherDescription(weatherCode);
+            });
+            formattedForecast.forecast.icon = formattedForecast.forecast.weatherCode.map((weatherCode, index) => {
+                return getWeatherIcon(weatherCode, formattedForecast.forecast.isDay[index]);
+            });
+        }
+
+
+        // add lookup of weather code, adding description to the data.
+        // also use weather code to identify the correct icon to be used.
+
         return formattedForecast
     }
 
-    const handleError = (error) => {
-        setCurrentWeather({});
-        return setErrorMessage (error);
-    }
-
-    // This function is just to simply testing without hammering the API and should not be in use for production.
-    const mockWeather = () => {
-        setErrorMessage (undefined);
-        setWeatherData(formatForecastData(mockData.forecastData));
-        // setWeatherData(mockData.forecastData);
-        setSearchLocation({
-            longitude: -2.4457329,
-            latitude: 53.097829,
-            name: "Crewe, Cheshire East, England, United Kingdom"
-        });
-    }
 
     return (
         <>
@@ -108,12 +102,14 @@ export default function Weather (props) {
             <div className='weather-search'>
                 <input className='input-location'  type='text' name='location' id='location' placeholder='Enter Search Location' value={locationInput} onChange={ (e) => setLocationInput(e.target.value)} onKeyDown={(event) => {if(event.key === "Enter") handleGetWeather()}}/>
                 <button className='btn-search bg-secondary text-light' onClick={() => handleGetWeather()}>Get Weather</button>
-                {!import.meta.env.PROD && <button className='dev-temp' onClick={() => mockWeather()}>Mock Fetch</button>}
+                {errorMessage && <p className='error-msg'>{errorMessage}</p>}
             </div>
-            
-            {errorMessage && <p className='error-msg'>{errorMessage}</p>}
-            {searchLocation && <WeatherSummary location={searchLocation.name} weatherData={weatherData.current} />}
-            {searchLocation && <WeatherForecast weatherData={weatherData.forecast} />}
+            <div className='weather-results'>
+                {searchLocation && <WeatherSummary location={searchLocation.name} weatherData={weatherData.current} />}
+                {/* {searchLocation && <WeatherForecast weatherData={weatherData.forecast} />} */}
+            </div>
+
+
         </>
     )
 }
