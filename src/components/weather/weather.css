@@ -15,6 +15,7 @@
 
 .error-msg {
     color: darkred;
+    flex: 0 0 100%;
 }
 
 .input-location {
